@@ -17,6 +17,7 @@ bootloaders=\
 .PHONY: all
 all: $(bootloaders)
 
+.PHONY: clean
 clean:
 	-rm -f boot_insecure.elf boot_trng.elf
 	-rm -f boot_insecure.bin boot_trng.bin
@@ -30,9 +31,10 @@ boot_trng_sources= \
 	boot_trng/bootloader.c \
 	common/ed25519/*.c \
 
+.PRECIOUS: %.elf
+
 %.elf: $(%_sources) %/bootloader.lds
 	$(CC) $(CFLAGS) -I common/ -L . -T $*/bootloader.lds -o $@ $($*_sources)
-	cp $@ _$@
 
 %.bin: %.elf
-	$(OBJCOPY) -O binary --only-section=.text $< $@;
+	$(OBJCOPY) -O binary --only-section=.text --change-addresses -0x1428 $< $@;
