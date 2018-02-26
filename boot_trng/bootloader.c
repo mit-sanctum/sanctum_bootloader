@@ -71,24 +71,7 @@ void bootloader() {
 
   // Measure SM
   sha512_init(&hash_ctx);
-
-  /*
-  asm volatile (
-    "la t0, sanctum_sm_ptr \n"
-    "la t1, sanctum_sm_size \n"
-    "lw t2, sanctum_sm_size \n"
-    "ld t2, -1(x0)"
-    : : :
-  );
-  */
-
-  //const byte * _sanctum_sm_ptr = (const unsigned char *)0x8000028c;
-  //unsigned int * _sanctum_sm_size = (unsigned int *)0x80000168;
-  //*sanctum_sm_size = 0x1ffd704;
-
-  //sha512_update(&hash_ctx, sanctum_sm_ptr, *sanctum_sm_size);
-  //sha512_update(&hash_ctx, _sanctum_sm_ptr, *_sanctum_sm_size);
-  sha512_update(&hash_ctx, (const unsigned char *)0x8000028c, *((unsigned int *)0x80000168));
+  sha512_update(&hash_ctx, sanctum_sm_ptr, *sanctum_sm_size);
   sha512_final(&hash_ctx, sanctum_sm_hash);
 
   // Combine SK_D and H_SM via a hash

@@ -2,40 +2,32 @@
 
 reset:
   # If this is not core 0:
-  csrr a0, mhartid
-  bnez a0, other_core
+  csrr t0, mhartid
+  bnez t0, other_core
 
   # invariant: mhartid=0
-
-  # clean core state, initially
-  la ra, clean_core
-  jalr ra, ra
-
   # set up a stack
-  li sp, 0x90000000 # somewhere deep in DRAM
+  li sp, 0x84000000 # somewhere deep in DRAM
 
   # run the bootloader
-  la ra, bootloader
-  jalr ra, ra
+  call bootloader
 
   # clean memory, after the fact
-  la ra, clean_memory
-  jalr ra, ra
+  call clean_memory
 
   # clean core state, after the fact
-  la ra, clean_core
-  jalr ra, ra
+  call clean_core
 
   # boot payload
   la t0, sanctum_sm_ptr
   jr t0
+
   # <end of bootloader>
 
 ## Booting other cores
 other_core:
   ### clean other core state
-  la ra, clean_core
-  jalr ra, ra
+  call clean_core
 
   ### allow MSIP interrupts
   li a2, 8

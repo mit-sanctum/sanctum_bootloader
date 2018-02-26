@@ -4,9 +4,12 @@ CFLAGS = \
 	-march=rv64imac -mcmodel=medany -mabi=lp64 \
 	-nostdlib -nostartfiles -fno-common -std=gnu11 \
 	-static \
+	-fPIC \
 	-DENTROPY=0 -DNONSMP_HART=0 \
-	-O2 -Wall\
-	#-g -Og -Wall\
+	-Og -Og -Wall
+
+	#-O2 -Wall\
+	#-fPIC \
 
 # ^ consider taking out -g -Og and putting in -O2
 
@@ -37,4 +40,4 @@ boot_trng_sources= \
 	$(CC) $(CFLAGS) -I common/ -L . -T $*/bootloader.lds -o $@ $($*_sources)
 
 %.bin: %.elf
-	$(OBJCOPY) -O binary --only-section=.text --change-addresses -0x1428 $< $@;
+	$(OBJCOPY) -O binary --only-section=.text $< $@;

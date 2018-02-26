@@ -4,7 +4,10 @@ ENTRY( _entry )
 
 SECTIONS
 {
-  . = 0x1428; /* boot loader lives in boot ROM after the device tree */
+  . = 0x11020;
+
+  /* the bootloader should be position-independent
+     to allow a variety of devicetree string sizes */
 
   .text :
   {
