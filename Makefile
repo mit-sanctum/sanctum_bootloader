@@ -5,11 +5,7 @@ CFLAGS = \
 	-nostdlib -nostartfiles -fno-common -std=gnu11 \
 	-static \
 	-fPIC \
-	-DENTROPY=0 -DNONSMP_HART=0 \
-	-Og -Og -Wall
-
-	#-O2 -Wall\
-	#-fPIC \
+	-O2 -Wall\
 
 # ^ consider taking out -g -Og and putting in -O2
 
